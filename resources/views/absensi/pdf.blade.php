@@ -56,6 +56,7 @@
                 <th>Tanggal</th>
                 <th>Sesi</th>
                 <th>Nama</th>
+                <th>Penjualan Dalam Rupiah</th>
                 <th>Penjualan</th>
             </tr>
         </thead>
@@ -66,6 +67,7 @@
                     </td>
                     <td>{{ $row[3] }}</td>
                     <td>{{ $row[1] }}</td>
+                    <td>{{ $row[7] }}</td>
                     <td>{!! $row[6] !!}</td>
                 </tr>
             @endforeach
