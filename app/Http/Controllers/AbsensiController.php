@@ -128,13 +128,8 @@ class AbsensiController extends Controller
         }
         unset($row); // Hindari referensi variabel tak terduga
 
-        $groupedData = collect($filteredData)->groupBy(function ($row) {
-            return is_numeric($row[2]) ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[2])->format('d/m/Y') : $row[2];
-        });
-
-
         // Generate PDF
-        $pdf = PDF::loadView('absensi.pdf', compact('filteredData', 'startDate', 'endDate', 'bulan', 'groupedData'));
+        $pdf = PDF::loadView('absensi.pdf', compact('filteredData', 'startDate', 'endDate', 'bulan'));
         return $pdf->download('Penjualan ' . date('d', $startDate) . ' Sampai ' . date('d', $endDate) . ' ' . $bulan . ' ' . date('Y', $endDate) . '.pdf');
     }
 }
