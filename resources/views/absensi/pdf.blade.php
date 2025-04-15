@@ -19,7 +19,7 @@
         }
 
         th,
-        td {
+        .selain-tanggal {
             border: 1px solid black;
             padding: 5px;
             text-align: left;
@@ -43,6 +43,19 @@
             text-align: center;
             font-weight: bold;
         }
+
+        .tanggal-utama {
+            padding: 5px;
+            border-left: 1px solid black;
+            border-right: 1px solid black;
+            border-top: 1px solid black;
+        }
+
+        .tanggal-selanjutnya {
+            padding: 5px;
+            border-left: 1px solid black;
+            border-right: 1px solid black;
+        }
     </style>
 </head>
 
@@ -61,16 +74,48 @@
             </tr>
         </thead>
         <tbody>
+            @php
+                $dateCounts = [];
+                foreach ($filteredData as $row) {
+                    $tanggal = is_numeric($row[2])
+                        ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[2])->format('d/m/Y')
+                        : $row[2];
+                    $dateCounts[$tanggal] = ($dateCounts[$tanggal] ?? 0) + 1;
+                }
+
+                $dateRemainder = []; // counter sementara
+                $lastDate = null;
+            @endphp
+
+
             @foreach ($filteredData as $row)
+                @php
+                    $tanggal = is_numeric($row[2])
+                        ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[2])->format('d/m/Y')
+                        : $row[2];
+
+                    $showTanggal = $tanggal !== $lastDate;
+
+                    $dateRemainder[$tanggal] = ($dateRemainder[$tanggal] ?? 0) + 1;
+                    $isLastForDate = $dateRemainder[$tanggal] === $dateCounts[$tanggal];
+                @endphp
+
                 <tr>
-                    <td>{{ is_numeric($row[2]) ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[2])->format('d/m/Y') : $row[2] }}
+                    <td class="{{ $showTanggal ? 'tanggal-utama' : 'tanggal-selanjutnya' }}"
+                        style="{{ !$showTanggal && $isLastForDate ? 'border-bottom: 1px solid black;' : '' }}">
+                        {{ $showTanggal ? $tanggal : '' }}
                     </td>
-                    <td>{{ $row[3] }}</td>
-                    <td>{{ $row[1] }}</td>
-                    <td>{{ $row[7] }}</td>
-                    <td>{!! $row[6] !!}</td>
+
+
+                    <td class="selain-tanggal">{{ $row[3] }}</td>
+                    <td class="selain-tanggal">{{ $row[1] }}</td>
+                    <td class="selain-tanggal">{{ $row[7] }}</td>
+                    <td class="selain-tanggal">{!! $row[6] !!}</td>
                 </tr>
+                @php $lastDate = $tanggal; @endphp
             @endforeach
+
+
         </tbody>
     </table>
 </body>
