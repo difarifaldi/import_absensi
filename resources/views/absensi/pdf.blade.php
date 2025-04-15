@@ -29,12 +29,12 @@
             background-color: #f2f2f2;
         }
 
-        td:nth-child(4) {
+        td:nth-child(5) {
             text-align: left;
             vertical-align: top;
         }
 
-        td:nth-child(4) ul {
+        td:nth-child(5) ul {
             padding-left: 15px;
             margin: 2px;
         }
