@@ -132,34 +132,9 @@ class AbsensiController extends Controller
             return is_numeric($row[2]) ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[2])->format('d/m/Y') : $row[2];
         });
 
-        // Pilih format output
-        if ($request->format === 'pdf') {
-            // Generate PDF
-            $pdf = PDF::loadView('absensi.pdf', compact('filteredData', 'startDate', 'endDate', 'bulan', 'groupedData'));
-            return $pdf->download('Penjualan ' . date('d', $startDate) . ' Sampai ' . date('d', $endDate) . ' ' . $bulan . ' ' . date('Y', $endDate) . '.pdf');
-        } elseif ($request->format === 'word') {
-            $phpWord = new \PhpOffice\PhpWord\PhpWord();
-            $section = $phpWord->addSection();
-            $section->addText("Laporan Penjualan", ['bold' => true, 'size' => 16]);
-            $section->addText("Periode: " . date('d/m/Y', $startDate) . " - " . date('d/m/Y', $endDate));
 
-            foreach ($groupedData as $date => $rows) {
-                $section->addText("\nTanggal: $date", ['bold' => true]);
-                foreach ($rows as $row) {
-                    $cleanText = preg_replace('/[^\PC\s]/u', '', $row[6]); // Bersihkan karakter aneh
-                    $section->addText("- " . substr($cleanText, 0, 1000)); // Batasi 1000 karakter
-                }
-            }
-
-            $filePath = storage_path('Laporan_Penjualan.docx');
-            $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-            $objWriter->save($filePath);
-
-            if (!file_exists($filePath)) {
-                return response()->json(['error' => 'File Word tidak terbentuk'], 500);
-            }
-
-            return response()->download($filePath)->deleteFileAfterSend();
-        }
+        // Generate PDF
+        $pdf = PDF::loadView('absensi.pdf', compact('filteredData', 'startDate', 'endDate', 'bulan', 'groupedData'));
+        return $pdf->download('Penjualan ' . date('d', $startDate) . ' Sampai ' . date('d', $endDate) . ' ' . $bulan . ' ' . date('Y', $endDate) . '.pdf');
     }
 }
