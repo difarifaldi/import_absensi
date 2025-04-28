@@ -56,6 +56,31 @@
             border-left: 1px solid black;
             border-right: 1px solid black;
         }
+
+        /* Khusus untuk tabel total penjualan */
+        .tabel-total-penjualan {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tabel-total-penjualan th,
+        .tabel-total-penjualan td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        /* Biar baris selang-seling */
+        .tabel-total-penjualan tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .tabel-total-penjualan thead {
+            background-color: #4CAF50;
+            /* hijau cerah */
+            color: white;
+            /* tulisan putih */
+        }
     </style>
 </head>
 
@@ -98,6 +123,8 @@
 
                     $dateRemainder[$tanggal] = ($dateRemainder[$tanggal] ?? 0) + 1;
                     $isLastForDate = $dateRemainder[$tanggal] === $dateCounts[$tanggal];
+
+                    $penjualan = floatval(str_replace(['.', 'Rp', 'RP', ' '], '', $row[7]));
                 @endphp
 
                 <tr>
@@ -106,10 +133,10 @@
                         {{ $showTanggal ? $tanggal : '' }}
                     </td>
 
-
                     <td class="selain-tanggal">{{ $row[3] }}</td>
                     <td class="selain-tanggal">{{ $row[1] }}</td>
-                    <td class="selain-tanggal">{{ $row[7] }}</td>
+                    {{-- Str::startsWith($row[7], 'Rp') --}}
+                    <td class="selain-tanggal"> {{ 'Rp. ' . number_format($penjualan, 0, ',', '.') }} </td>
                     <td class="selain-tanggal">{!! $row[6] !!}</td>
                 </tr>
                 @php $lastDate = $tanggal; @endphp
@@ -123,7 +150,7 @@
 
     <!-- Table for total sales per person -->
     <h3>Total Penjualan Per Orang</h3>
-    <table>
+    <table class="tabel-total-penjualan">
         <thead>
             <tr>
                 <th>Nama</th>
@@ -141,7 +168,7 @@
                     $penjualan = $row[7]; // Penjualan ada di kolom 7
 
                     // Menghilangkan 'Rp' dan titik (untuk format Rupiah) lalu mengonversi ke angka
-                    $penjualan = floatval(str_replace(['.', 'Rp', ' '], '', $penjualan));
+                    $penjualan = floatval(str_replace(['.', 'Rp', 'RP', ' '], '', $penjualan));
 
                     // Pastikan tidak ada duplikasi untuk nama yang sama
                     if (!isset($totalPenjualanPerOrang[$nama])) {
