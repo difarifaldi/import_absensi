@@ -102,7 +102,7 @@
 
                 <tr>
                     <td class="{{ $showTanggal ? 'tanggal-utama' : 'tanggal-selanjutnya' }}"
-                        style="{{ !$showTanggal && $isLastForDate ? 'border-bottom: 1px solid black;' : '' }}">
+                        style="{{ $isLastForDate ? 'border-bottom: 1px solid black;' : '' }}">
                         {{ $showTanggal ? $tanggal : '' }}
                     </td>
 
