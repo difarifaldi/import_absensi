@@ -118,6 +118,50 @@
 
         </tbody>
     </table>
+
+    <br><br> <!-- Add spacing between the tables -->
+
+    <!-- Table for total sales per person -->
+    <h3>Total Penjualan Per Orang</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Nama</th>
+                <th>Total Penjualan</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php
+                // Mengelompokkan data berdasarkan Nama dan menghitung total penjualan
+                $totalPenjualanPerOrang = [];
+
+                foreach ($filteredData as $row) {
+                    // Gunakan trim untuk menghapus spasi yang tidak diperlukan
+                    $nama = strtolower(trim($row[1])); // Nama ada di kolom 1, dengan trim dan lowercase
+                    $penjualan = $row[7]; // Penjualan ada di kolom 7
+
+                    // Menghilangkan 'Rp' dan titik (untuk format Rupiah) lalu mengonversi ke angka
+                    $penjualan = floatval(str_replace(['.', 'Rp', ' '], '', $penjualan));
+
+                    // Pastikan tidak ada duplikasi untuk nama yang sama
+                    if (!isset($totalPenjualanPerOrang[$nama])) {
+                        $totalPenjualanPerOrang[$nama] = 0;
+                    }
+
+                    // Menambahkan penjualan untuk orang yang sama
+                    $totalPenjualanPerOrang[$nama] += $penjualan;
+                }
+            @endphp
+
+            @foreach ($totalPenjualanPerOrang as $nama => $totalPenjualan)
+                <tr>
+                    <td>{{ ucfirst($nama) }}</td> <!-- Menampilkan nama dengan huruf pertama kapital -->
+                    <td>{{ 'Rp ' . number_format($totalPenjualan, 0, ',', '.') }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
 </body>
 
 </html>
