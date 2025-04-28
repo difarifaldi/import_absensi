@@ -149,6 +149,11 @@ class AbsensiController extends Controller
 
         // Generate PDF
         $pdf = PDF::loadView('absensi.pdf', compact('filteredData', 'startDate', 'endDate', 'bulan'));
-        return $pdf->download('Penjualan ' . date('d', $startDate) . ' Sampai ' . date('d', $endDate) . ' ' . $bulan . ' ' . date('Y', $endDate) . '.pdf');
+        return $pdf->download(
+            'Penjualan ' . ltrim(date('d', $startDate), '0') .
+                ' Sampai ' . ltrim(date('d', $endDate), '0') .
+                ' ' . $bulan .
+                ' ' . date('Y', $endDate) . '.pdf'
+        );
     }
 }

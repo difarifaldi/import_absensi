@@ -83,8 +83,9 @@
 </head>
 
 <body>
-    <h2>Laporan dari {{ date('d', $startDate) }} sampai
-        {{ date('d', $endDate) . ' ' . $bulan . ' ' . date('Y', $endDate) }}</h2>
+    <h2>Laporan dari tanggal {{ ltrim(date('d', $startDate), '0') }} sampai
+        {{ ltrim(date('d', $endDate), '0') . ' ' . $bulan . ' ' . date('Y', $endDate) }}</h2>
+
 
     <table>
         <thead>
@@ -147,7 +148,7 @@
     <br><br> <!-- Add spacing between the tables -->
 
     <!-- Table for total sales per person -->
-    <h3>Total Penjualan Per Orang</h3>
+    <h3>Total Penjualan Per Host Live</h3>
     <table class="tabel-total-penjualan">
         <thead>
             <tr>
@@ -159,6 +160,7 @@
             @php
                 // Mengelompokkan data berdasarkan Nama dan menghitung total penjualan
                 $totalPenjualanPerOrang = [];
+                $grandTotalPenjualan = 0;
 
                 foreach ($filteredData as $row) {
                     // Gunakan trim untuk menghapus spasi yang tidak diperlukan
@@ -175,6 +177,7 @@
 
                     // Menambahkan penjualan untuk orang yang sama
                     $totalPenjualanPerOrang[$nama] += $penjualan;
+                    $grandTotalPenjualan += $penjualan;
                 }
             @endphp
 
@@ -184,6 +187,12 @@
                     <td>{{ 'Rp ' . number_format($totalPenjualan, 0, ',', '.') }}</td>
                 </tr>
             @endforeach
+
+            <!-- Tambahkan baris total semua penjualan -->
+            <tr style="font-weight: bold; background-color: #dff0d8;">
+                <td>Total Penjualan</td>
+                <td>{{ 'Rp ' . number_format($grandTotalPenjualan, 0, ',', '.') }}</td>
+            </tr>
         </tbody>
     </table>
 
