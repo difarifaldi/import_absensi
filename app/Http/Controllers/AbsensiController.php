@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\PDF;
 use App\Exports\FilteredExport;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AbsensiController extends Controller
 {
@@ -119,7 +120,25 @@ class AbsensiController extends Controller
             $dateA = is_numeric($a[2]) ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($a[2])->getTimestamp() : strtotime($a[2]);
             $dateB = is_numeric($b[2]) ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($b[2])->getTimestamp() : strtotime($b[2]);
 
-            return $dateA <=> $dateB; // Urutkan dari yang terkecil ke terbesar (ascending)
+            if ($dateA === $dateB) {
+                $sesiOrder = [
+                    'Sesi 1' => 1,
+                    'Sesi 2' => 2,
+                    'Sesi 3' => 3,
+                    'Sesi 4' => 4,
+                ];
+
+                // Ambil hanya bagian awal (contoh: "Sesi 3" dari "Sesi 3 (14.00-18.00)")
+                $sesiNameA = Str::before($a[3], ' (');
+                $sesiNameB = Str::before($b[3], ' (');
+
+                $sesiA = $sesiOrder[$sesiNameA] ?? 99;
+                $sesiB = $sesiOrder[$sesiNameB] ?? 99;
+
+                return $sesiA <=> $sesiB;
+            }
+
+            return $dateA <=> $dateB;
         });
 
         // Terapkan normalisasi ke kolom penjualan sebelum dikirim ke tampilan

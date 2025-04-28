@@ -75,11 +75,9 @@
             background-color: #f2f2f2;
         }
 
-        .tabel-total-penjualan thead {
+        .tabel-total-penjualan thead th {
             background-color: #4CAF50;
-            /* hijau cerah */
             color: white;
-            /* tulisan putih */
         }
     </style>
 </head>
