@@ -148,7 +148,7 @@
     <br><br> <!-- Add spacing between the tables -->
 
     <!-- Table for total sales per person -->
-    <h3>Total Penjualan Per Host Live</h3>
+    {{-- <h3>Total Penjualan Per Host Live</h3>
     <table class="tabel-total-penjualan">
         <thead>
             <tr>
@@ -194,7 +194,7 @@
                 <td>{{ 'Rp ' . number_format($grandTotalPenjualan, 0, ',', '.') }}</td>
             </tr>
         </tbody>
-    </table>
+    </table> --}}
 
 </body>
 
