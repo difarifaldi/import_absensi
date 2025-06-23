@@ -28,16 +28,18 @@
                                     <div class="mb-3 row">
                                         <label class="col-sm-2 col-form-label">Sampai Tanggal</label>
                                         <div class="col-sm-10">
-                                            <input type="date" class="form-control" name="end_date" required>
+                                            <input type="date" class="form-control" name="end_date" required
+                                                max="{{ date('Y-m-d') }}">
                                         </div>
                                     </div>
                                     <div class="mb-3 row">
-                                        <label class="col-sm-2 col-form-label">Format File</label>
+                                        <label class="col-sm-2 col-form-label">Pendapatan Host Live</label>
                                         <div class="col-sm-10">
-                                            <select name="format" class="form-control" required>
-                                                <option value="pdf">PDF</option>
-                                                <option value="word">Word</option>
-                                            </select>
+                                            <div class="form-check form-switch">
+                                                <input type="hidden" name="pendapatan" value="0">
+                                                <input class="form-check-input" type="checkbox" id="pendapatan"
+                                                    name="pendapatan" value="1">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="d-flex justify-content-end">

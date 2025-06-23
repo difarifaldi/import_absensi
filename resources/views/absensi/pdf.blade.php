@@ -148,54 +148,55 @@
     <br><br> <!-- Add spacing between the tables -->
 
     <!-- Table for total sales per person -->
-    {{-- <h3>Total Penjualan Per Host Live</h3>
-    <table class="tabel-total-penjualan">
-        <thead>
-            <tr>
-                <th>Nama</th>
-                <th>Total Penjualan</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php
-                // Mengelompokkan data berdasarkan Nama dan menghitung total penjualan
-                $totalPenjualanPerOrang = [];
-                $grandTotalPenjualan = 0;
-
-                foreach ($filteredData as $row) {
-                    // Gunakan trim untuk menghapus spasi yang tidak diperlukan
-                    $nama = strtolower(trim($row[1])); // Nama ada di kolom 1, dengan trim dan lowercase
-                    $penjualan = $row[7]; // Penjualan ada di kolom 7
-
-                    // Menghilangkan 'Rp' dan titik (untuk format Rupiah) lalu mengonversi ke angka
-                    $penjualan = floatval(str_replace(['.', 'Rp', 'RP', ' '], '', $penjualan));
-
-                    // Pastikan tidak ada duplikasi untuk nama yang sama
-                    if (!isset($totalPenjualanPerOrang[$nama])) {
-                        $totalPenjualanPerOrang[$nama] = 0;
-                    }
-
-                    // Menambahkan penjualan untuk orang yang sama
-                    $totalPenjualanPerOrang[$nama] += $penjualan;
-                    $grandTotalPenjualan += $penjualan;
-                }
-            @endphp
-
-            @foreach ($totalPenjualanPerOrang as $nama => $totalPenjualan)
+    @if ($showPendapatan)
+        <h3>Total Penjualan Per Host Live</h3>
+        <table class="tabel-total-penjualan">
+            <thead>
                 <tr>
-                    <td>{{ ucfirst($nama) }}</td> <!-- Menampilkan nama dengan huruf pertama kapital -->
-                    <td>{{ 'Rp ' . number_format($totalPenjualan, 0, ',', '.') }}</td>
+                    <th>Nama</th>
+                    <th>Total Penjualan</th>
                 </tr>
-            @endforeach
+            </thead>
+            <tbody>
+                @php
+                    // Mengelompokkan data berdasarkan Nama dan menghitung total penjualan
+                    $totalPenjualanPerOrang = [];
+                    $grandTotalPenjualan = 0;
 
-            <!-- Tambahkan baris total semua penjualan -->
-            <tr style="font-weight: bold; background-color: #dff0d8;">
-                <td>Total Penjualan</td>
-                <td>{{ 'Rp ' . number_format($grandTotalPenjualan, 0, ',', '.') }}</td>
-            </tr>
-        </tbody>
-    </table> --}}
+                    foreach ($filteredData as $row) {
+                        // Gunakan trim untuk menghapus spasi yang tidak diperlukan
+                        $nama = strtolower(trim($row[1])); // Nama ada di kolom 1, dengan trim dan lowercase
+                        $penjualan = $row[7]; // Penjualan ada di kolom 7
 
+                        // Menghilangkan 'Rp' dan titik (untuk format Rupiah) lalu mengonversi ke angka
+                        $penjualan = floatval(str_replace(['.', 'Rp', 'RP', ' '], '', $penjualan));
+
+                        // Pastikan tidak ada duplikasi untuk nama yang sama
+                        if (!isset($totalPenjualanPerOrang[$nama])) {
+                            $totalPenjualanPerOrang[$nama] = 0;
+                        }
+
+                        // Menambahkan penjualan untuk orang yang sama
+                        $totalPenjualanPerOrang[$nama] += $penjualan;
+                        $grandTotalPenjualan += $penjualan;
+                    }
+                @endphp
+
+                @foreach ($totalPenjualanPerOrang as $nama => $totalPenjualan)
+                    <tr>
+                        <td>{{ ucfirst($nama) }}</td> <!-- Menampilkan nama dengan huruf pertama kapital -->
+                        <td>{{ 'Rp ' . number_format($totalPenjualan, 0, ',', '.') }}</td>
+                    </tr>
+                @endforeach
+
+                <!-- Tambahkan baris total semua penjualan -->
+                <tr style="font-weight: bold; background-color: #dff0d8;">
+                    <td>Total Penjualan</td>
+                    <td>{{ 'Rp ' . number_format($grandTotalPenjualan, 0, ',', '.') }}</td>
+                </tr>
+            </tbody>
+        </table>
+    @endif
 </body>
 
 </html>
