@@ -83,8 +83,15 @@
 </head>
 
 <body>
-    <h2>Laporan dari tanggal {{ ltrim(date('d', $startDate), '0') }} sampai
-        {{ ltrim(date('d', $endDate), '0') . ' ' . $bulan . ' ' . date('Y', $endDate) }}</h2>
+    <h2>
+        Laporan dari tanggal
+        {{ ltrim(date('d', $startDate), '0') }}
+        @if ($bulanStart)
+            {{ ' ' . $bulanStart }}
+        @endif
+        sampai {{ ltrim(date('d', $endDate), '0') }} {{ $bulan }} {{ date('Y', $endDate) }}
+    </h2>
+
 
 
     <table>

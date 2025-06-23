@@ -91,6 +91,10 @@ class AbsensiController extends Controller
 
         // Ambil nama bulan dalam bahasa Indonesia
         $bulan = $this->bulanIndonesia(date('F', $endDate));
+        $bulanStart = date('F', $startDate) != date('F', $endDate)
+            ? $this->bulanIndonesia(date('F', $startDate))
+            : null;
+
 
         $filteredData = array_filter($data, function ($row) use ($startDate, $endDate) {
             if (!isset($row[2]) || empty($row[2])) return false; // Pastikan ada nilai di kolom ke-3
@@ -149,9 +153,9 @@ class AbsensiController extends Controller
         // Generate PDF
         $showPendapatan = $request->has('pendapatan') && $request->pendapatan == 1;
 
-        $pdf = PDF::loadView('absensi.pdf', compact('filteredData', 'startDate', 'endDate', 'bulan', 'showPendapatan'));
+        $pdf = PDF::loadView('absensi.pdf', compact('filteredData', 'startDate', 'endDate', 'bulan', 'bulanStart', 'showPendapatan'));
         return $pdf->download(
-            'Penjualan ' . ltrim(date('d', $startDate), '0') .
+            'Penjualan ' . ltrim(date('d', $startDate), '0') . ' ' . $bulanStart .
                 ' Sampai ' . ltrim(date('d', $endDate), '0') .
                 ' ' . $bulan .
                 ' ' . date('Y', $endDate) . '.pdf'
