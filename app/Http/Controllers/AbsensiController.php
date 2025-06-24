@@ -154,11 +154,12 @@ class AbsensiController extends Controller
         $showPendapatan = $request->has('pendapatan') && $request->pendapatan == 1;
 
         $pdf = PDF::loadView('absensi.pdf', compact('filteredData', 'startDate', 'endDate', 'bulan', 'bulanStart', 'showPendapatan'));
-        return $pdf->download(
-            'Penjualan ' . ltrim(date('d', $startDate), '0') . ' ' . $bulanStart .
-                ' Sampai ' . ltrim(date('d', $endDate), '0') .
-                ' ' . $bulan .
-                ' ' . date('Y', $endDate) . '.pdf'
-        );
+
+        $filename = 'Penjualan ' . ltrim(date('d', $startDate), '0') .
+            ($bulanStart ? ' ' . $bulanStart : '') .
+            ' Sampai ' . ltrim(date('d', $endDate), '0') .
+            ' ' . $bulan .
+            ' ' . date('Y', $endDate) . '.pdf';
+        return $pdf->download($filename);
     }
 }

@@ -4,8 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan dari {{ date('d', $startDate) }} sampai
-        {{ date('d', $endDate) . ' ' . $bulan . ' ' . date('Y', $endDate) }}</title>
+    <title>Laporan dari tanggal
+        {{ ltrim(date('d', $startDate), '0') }}
+        @if ($bulanStart)
+            {{ ' ' . $bulanStart }}
+        @endif
+        sampai {{ ltrim(date('d', $endDate), '0') }} {{ $bulan }} {{ date('Y', $endDate) }}
+    </title>
     <style>
         body {
             font-family: Arial, sans-serif;
