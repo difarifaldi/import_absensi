@@ -167,6 +167,8 @@
                 <tr>
                     <th>Nama</th>
                     <th>Total Penjualan</th>
+                    <th>Total Sesi</th>
+                    <th>Rata-rata Penjualan</th>
                 </tr>
             </thead>
             <tbody>
@@ -174,6 +176,7 @@
                     // Mengelompokkan data berdasarkan Nama dan menghitung total penjualan
                     $totalPenjualanPerOrang = [];
                     $grandTotalPenjualan = 0;
+                    $grandTotalSesi = 0;
 
                     foreach ($filteredData as $row) {
                         // Gunakan trim untuk menghapus spasi yang tidak diperlukan
@@ -185,26 +188,43 @@
 
                         // Pastikan tidak ada duplikasi untuk nama yang sama
                         if (!isset($totalPenjualanPerOrang[$nama])) {
-                            $totalPenjualanPerOrang[$nama] = 0;
+                            $totalPenjualanPerOrang[$nama] = [
+                                'jumlah_sesi' => 0,
+                                'total_penjualan' => 0,
+                            ];
                         }
 
                         // Menambahkan penjualan untuk orang yang sama
-                        $totalPenjualanPerOrang[$nama] += $penjualan;
+                        $totalPenjualanPerOrang[$nama]['total_penjualan'] += $penjualan;
+                        $totalPenjualanPerOrang[$nama]['jumlah_sesi'] += 1;
                         $grandTotalPenjualan += $penjualan;
+                        $grandTotalSesi += 1;
                     }
                 @endphp
 
-                @foreach ($totalPenjualanPerOrang as $nama => $totalPenjualan)
+                @php
+                    // Sorting descending by total_penjualan
+                    uasort($totalPenjualanPerOrang, function ($a, $b) {
+                        return $b['total_penjualan'] <=> $a['total_penjualan'];
+                    });
+                @endphp
+
+                @foreach ($totalPenjualanPerOrang as $nama => $data)
                     <tr>
                         <td>{{ ucfirst($nama) }}</td> <!-- Menampilkan nama dengan huruf pertama kapital -->
-                        <td>{{ 'Rp ' . number_format($totalPenjualan, 0, ',', '.') }}</td>
+                        <td>{{ 'Rp ' . number_format($data['total_penjualan'], 0, ',', '.') }}</td>
+                        <td>{{ $data['jumlah_sesi'] . ' Sesi' }}</td>
+                        <td>{{ 'Rp ' . number_format($data['total_penjualan'] / $data['jumlah_sesi'], 0, ',', '.') }}
+                        </td>
                     </tr>
                 @endforeach
 
                 <!-- Tambahkan baris total semua penjualan -->
                 <tr style="font-weight: bold; background-color: #dff0d8;">
-                    <td>Total Penjualan</td>
+                    <td>Total </td>
                     <td>{{ 'Rp ' . number_format($grandTotalPenjualan, 0, ',', '.') }}</td>
+                    <td>{{ $grandTotalSesi . ' Sesi' }}</td>
+                    <td>{{ 'Rp ' . number_format($grandTotalPenjualan / $grandTotalSesi, 0, ',', '.') }}</td>
                 </tr>
             </tbody>
         </table>

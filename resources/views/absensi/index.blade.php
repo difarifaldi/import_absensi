@@ -22,7 +22,8 @@
                                     <div class="mb-3 row">
                                         <label class="col-sm-2 col-form-label">Dari Tanggal</label>
                                         <div class="col-sm-10">
-                                            <input type="date" class="form-control" name="start_date" required>
+                                            <input type="date" class="form-control" name="start_date" required
+                                                max="{{ date('Y-m-d') }}">
                                         </div>
                                     </div>
                                     <div class="mb-3 row">
