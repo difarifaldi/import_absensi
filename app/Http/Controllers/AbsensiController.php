@@ -146,7 +146,7 @@ class AbsensiController extends Controller
 
         // Terapkan normalisasi ke kolom penjualan sebelum dikirim ke tampilan
         foreach ($filteredData as &$row) {
-            $row[6] = $this->normalizePenjualan($row[6]); // Pastikan ini sesuai dengan indeks kolom penjualan
+            $row[7] = $this->normalizePenjualan($row[7]); // Pastikan ini sesuai dengan indeks kolom penjualan
         }
         unset($row); // Hindari referensi variabel tak terduga
 

@@ -135,7 +135,7 @@
                     $dateRemainder[$tanggal] = ($dateRemainder[$tanggal] ?? 0) + 1;
                     $isLastForDate = $dateRemainder[$tanggal] === $dateCounts[$tanggal];
 
-                    $penjualan = floatval(str_replace(['.', 'Rp', 'RP', ' '], '', $row[7]));
+                    $penjualan = floatval(str_replace(['.', 'Rp', 'RP', ' '], '', $row[6]));
                 @endphp
 
                 <tr>
@@ -148,7 +148,7 @@
                     <td class="selain-tanggal">{{ $row[1] }}</td>
                     {{-- Str::startsWith($row[7], 'Rp') --}}
                     <td class="selain-tanggal"> {{ 'Rp. ' . number_format($penjualan, 0, ',', '.') }} </td>
-                    <td class="selain-tanggal">{!! $row[6] !!}</td>
+                    <td class="selain-tanggal">{!! $row[7] !!}</td>
                 </tr>
                 @php $lastDate = $tanggal; @endphp
             @endforeach
@@ -181,7 +181,7 @@
                     foreach ($filteredData as $row) {
                         // Gunakan trim untuk menghapus spasi yang tidak diperlukan
                         $nama = strtolower(trim($row[1])); // Nama ada di kolom 1, dengan trim dan lowercase
-                        $penjualan = $row[7]; // Penjualan ada di kolom 7
+                        $penjualan = $row[6]; // Penjualan ada di kolom 6
 
                         // Menghilangkan 'Rp' dan titik (untuk format Rupiah) lalu mengonversi ke angka
                         $penjualan = floatval(str_replace(['.', 'Rp', 'RP', ' '], '', $penjualan));
