@@ -155,11 +155,20 @@ class AbsensiController extends Controller
 
         $pdf = PDF::loadView('absensi.pdf', compact('filteredData', 'startDate', 'endDate', 'bulan', 'bulanStart', 'showPendapatan'));
 
-        $filename = 'Penjualan ' . ltrim(date('d', $startDate), '0') .
-            ($bulanStart ? ' ' . $bulanStart : '') .
-            ' Sampai ' . ltrim(date('d', $endDate), '0') .
-            ' ' . $bulan .
-            ' ' . date('Y', $endDate) . '.pdf';
+
+        $filename = ($showPendapatan
+            ? 'Pendapatan Host Live '
+            : 'Penjualan ')
+            . ltrim(date('d', $startDate), '0')
+            . ($bulanStart ? ' ' . $bulanStart : '')
+            . ' Sampai '
+            . ltrim(date('d', $endDate), '0')
+            . ' '
+            . $bulan
+            . ' '
+            . date('Y', $endDate)
+            . '.pdf';
+
         return $pdf->download($filename);
     }
 }

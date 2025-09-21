@@ -8,7 +8,6 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <a class="nav-link active" aria-current="page" href="{{ url('/') }}">Import Absen</a>
-                <a class="nav-link" href="{{ route('upload.form') }}">Scan KTP</a>
             </div>
         </div>
     </div>
